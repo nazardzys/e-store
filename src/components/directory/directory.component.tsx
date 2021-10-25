@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Directory: React.FC<Props> = () => {
-  const [sections, setSections] = useState([
+  const [sections] = useState([
     {
       title: 'hats',
       imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
@@ -44,8 +44,8 @@ const Directory: React.FC<Props> = () => {
 
   return (
     <div className="directory-menu">
-      {sections.map(({ id, imageUrl,  title, size }) => (
-        <MenuItem key={id} imageUrl={imageUrl} title={title} size={size} />
+      {sections.map(({ id, ...otherProps }) => (
+        <MenuItem key={id} {...otherProps} />
       ))}
     </div>
   );
