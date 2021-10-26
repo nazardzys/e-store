@@ -3,6 +3,7 @@ import './custom-button.styles.scss';
 
 type Props = {
   children: React.ReactChild;
+  onClick?: any;
   type?: 'button' | 'submit';
 };
 
