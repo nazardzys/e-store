@@ -5,11 +5,15 @@ type Props = {
   children: React.ReactChild;
   onClick?: any;
   type?: 'button' | 'submit';
+  isGoogleSignIn?: boolean;
 };
 
-const CustomButton: React.FC<Props> = ({ children, ...otherProps }) => {
+const CustomButton: React.FC<Props> = ({ children, isGoogleSignIn, ...otherProps }) => {
   return (
-    <button className="custom-button" {...otherProps}>
+    <button 
+      className={`${isGoogleSignIn ? 'google-sign-in' : ''} custom-button`} 
+      {...otherProps}
+    >
       {children}
     </button>
   );
