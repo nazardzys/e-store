@@ -1,16 +1,17 @@
+import './header.styles.scss';
 import React from 'react';
+import firebase from 'firebase/compat/app';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
-import firebase from 'firebase/compat/app';
 import { auth } from '../../firebase/firebase.utils';
-import './header.styles.scss';
+import { connect } from 'react-redux';
 
 type Props = {
-  currentUserState: firebase.User | null;
+  currentUser: firebase.User | null;
 }
 
-const Header: React.FC<Props> = ({ currentUserState }) => {
-  const hangleSignOut = () => auth.signOut();
+const Header: React.FC<Props> = ({ currentUser }) => {
+  const handleSignOut = () => auth.signOut();
 
   return (
     <div className="header">
@@ -25,8 +26,8 @@ const Header: React.FC<Props> = ({ currentUserState }) => {
           CONTACT
         </Link>
         {
-          currentUserState ?
-          <div className="option" onClick={hangleSignOut}>SIGN OUT</div>
+          currentUser ?
+          <div className="option" onClick={handleSignOut}>SIGN OUT</div>
           :
           <Link className="option" to="/signin">SIGN IN</Link>
         }
@@ -35,4 +36,8 @@ const Header: React.FC<Props> = ({ currentUserState }) => {
   );
 };
 
-export default Header;
+const mapStateToProps = (state: any) => ({
+  currentUser: state.user.currentUser
+});
+
+export default connect(mapStateToProps)(Header);
