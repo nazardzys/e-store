@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { signInWithGoogle } from '../../firebase/firebase.utils';
+import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
 import './sign-in.styles.scss';
 
 
@@ -9,12 +9,29 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    setEmail('');
-    setPassword('');
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      setEmail('');
+      setPassword('');
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    const stateMapper: any = {
+      email: setEmail,
+      password: setPassword,
+    };
+
+    stateMapper[name](value);
+  };
+
 
   return (
     <div className="sign-in">
@@ -27,7 +44,7 @@ const SignIn = () => {
           type="email"
           label="Email"
           value={email}
-          handleChange={() => {}}
+          handleChange={handleChange}
           required
         />
         <FormInput
@@ -35,7 +52,7 @@ const SignIn = () => {
           type="password"
           label="Password"
           value={password}
-          handleChange={() => {}}
+          handleChange={handleChange}
           required
         />
         <div className="buttons">

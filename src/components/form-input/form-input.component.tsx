@@ -2,10 +2,10 @@ import React from 'react';
 import './form-input.styles.scss';
 
 type Props = {
-  handleChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
   value: string;
-  required: boolean;
+  required?: boolean;
   name: string;
   type: string;
 };
@@ -13,7 +13,7 @@ type Props = {
 const FormInput: React.FC<Props> = ({ handleChange, value, label, ...otherProps }) => {
   return (
     <div className="group">
-      <input className="form-input" onChange={handleChange} {...otherProps} />
+      <input className="form-input" onChange={handleChange} value={value} {...otherProps} />
       {
         label && <label className={`${value.length ? 'shrink' : ''} form-input-label`}>
           {label}
