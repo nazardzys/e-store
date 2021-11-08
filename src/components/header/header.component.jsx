@@ -1,14 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-import { auth } from '../../firebase/firebase.utils';
-
-import { ReactComponent as Logo } from '../../assets/crown.svg';
-
 import './header.styles.scss';
 
-const Header = ({ currentUser }) => (
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+
+import { ReactComponent as Logo } from '../../assets/crown.svg';
+import CartIcon from '../cart-icon/cart-icon.component';
+import { auth } from '../../firebase/firebase.utils';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+import { selectHidden } from '../../redux/cart/cart.selectors';
+
+const Header = ({ currentUser, hidden }) => (
   <div className='header'>
     <Link className='logo-container' to='/'>
       <Logo className='logo' />
@@ -29,12 +33,17 @@ const Header = ({ currentUser }) => (
           SIGN IN
         </Link>
       )}
+      <CartIcon />
     </div>
+    {
+      !hidden && <CartDropdown />
+    }
   </div>
 );
 
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser
-});
+const mapStateToProps = createStructuredSelector(  {
+    currentUser: selectCurrentUser,
+    hidden: selectHidden
+  });
 
 export default connect(mapStateToProps)(Header);
